@@ -9,7 +9,7 @@ To build a machine learning model that predicts whether a person is at risk of h
 * Heart Disease UCI Dataset
 * Source: Kaggle
 
-✒️ Features include:
+✒️ Features include
 
 * Age
 * Sex
@@ -19,7 +19,7 @@ To build a machine learning model that predicts whether a person is at risk of h
 * Heart Rate
 * ECG Results
 
-🧩 Target:
+🧩 Target
 
 * Presence or absence of heart disease
 
