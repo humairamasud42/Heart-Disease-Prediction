@@ -1,6 +1,3 @@
-# AI/ML Internship Task 3
-# Heart Disease Prediction
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,59 +12,35 @@ from sklearn.metrics import (
     roc_auc_score
 )
 
-# -----------------------------------
-# LOAD DATASET
-# -----------------------------------
-
 df = pd.read_csv("data/heart_disease.csv")
 
 print("First 5 Rows:")
 print(df.head())
-
 print("\nDataset Info:")
 print(df.info())
-
 print("\nMissing Values:")
 print(df.isnull().sum())
 
-# -----------------------------------
-# DATA CLEANING
-# -----------------------------------
-
-# Remove missing values if any
 df = df.dropna()
 
-# -----------------------------------
-# EXPLORATORY DATA ANALYSIS (EDA)
-# -----------------------------------
-
-# Correlation Heatmap
-# Use only numeric columns for correlation
+# EDA
+# correlation heatmap
+# use only numeric columns for correlation
 numeric_df = df.select_dtypes(include=[np.number])
-
 plt.figure(figsize=(12,8))
 sns.heatmap(numeric_df.corr(), annot=True, cmap="coolwarm")
 plt.title("Correlation Heatmap")
 plt.show()
 
-# Target count
+# target count
 plt.figure(figsize=(6,4))
 sns.countplot(x='target', data=df)
-
 plt.title("Heart Disease Distribution")
 plt.show()
 
-# -----------------------------------
-# FEATURE SELECTION
-# -----------------------------------
-
+# feature selecion
 X = df.drop('target', axis=1)
 y = df['target']
-
-# -----------------------------------
-# TRAIN TEST SPLIT
-# -----------------------------------
-
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
@@ -75,26 +48,15 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42
 )
 
-# -----------------------------------
-# MODEL TRAINING
-# -----------------------------------
-
+# train, predict, evaluate
 model = LogisticRegression(max_iter=1000)
-
 model.fit(X_train, y_train)
-
-# Predictions
 y_pred = model.predict(X_test)
-
-# -----------------------------------
-# EVALUATION
-# -----------------------------------
 accuracy = accuracy_score(y_test, y_pred)
-
 print("\nAccuracy:")
 print(accuracy)
 
-# Confusion Matrix
+# confusion matrix
 cm = confusion_matrix(y_test, y_pred)
 
 plt.figure(figsize=(6,4))
@@ -104,7 +66,7 @@ plt.xlabel("Predicted")
 plt.ylabel("Actual")
 plt.show()
 
-# ROC Curve
+# ROC curve
 y_prob = model.predict_proba(X_test)[:,1]
 fpr, tpr, thresholds = roc_curve(y_test, y_prob)
 roc_auc = roc_auc_score(y_test, y_prob)
@@ -116,19 +78,13 @@ plt.xlabel("False Positive Rate")
 plt.ylabel("True Positive Rate")
 plt.title("ROC Curve")
 plt.legend()
-
 plt.show()
 
-# -----------------------------------
-# FEATURE IMPORTANCE
-# -----------------------------------
-
+# feature importance
 importance = pd.DataFrame({
     'Feature': X.columns,
     'Importance': model.coef_[0]
 })
-
 importance = importance.sort_values(by='Importance', ascending=False)
-
 print("\nFeature Importance:")
 print(importance)
